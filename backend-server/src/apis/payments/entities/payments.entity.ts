@@ -1,8 +1,10 @@
 import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { User } from 'src/apis/users/entities/users.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -35,4 +37,8 @@ export class Payment {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne(() => User)
+  @Field(() => User)
+  user: User;
 }
