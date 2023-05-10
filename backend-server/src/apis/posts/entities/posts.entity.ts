@@ -1,4 +1,4 @@
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Tag } from 'src/apis/tags/entities/tags.entity';
 import { User } from 'src/apis/users/entities/users.entity';
 import {
@@ -13,14 +13,18 @@ import {
 } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class Post {
   @PrimaryGeneratedColumn('uuid')
+  @Field(() => String)
   postId: string;
 
   @Column()
+  @Field(() => String)
   title: string;
 
   @Column()
+  @Field(() => String)
   content: string;
 
   @CreateDateColumn()
@@ -31,14 +35,15 @@ export class Post {
 
   @ManyToOne(() => User)
   @Field(() => User)
-  user: User;
+  user: User; //  포스트 작성자
 
   @JoinTable()
   @ManyToMany(() => Tag, (tags) => tags.posts)
   @Field(() => [Tag])
   tags: Tag[];
 
+  @JoinTable()
   @ManyToMany(() => User, (users) => users.posts)
-  @Field(() => User)
-  users: User;
+  // @Field(() => User) // Playground X
+  users: User; // 좋아요 누른 사람들
 }
