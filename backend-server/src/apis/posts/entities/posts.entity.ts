@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Series } from 'src/apis/series/entities/series.entity';
 import { Tag } from 'src/apis/tags/entities/tags.entity';
 import { User } from 'src/apis/users/entities/users.entity';
 import {
@@ -36,6 +37,10 @@ export class Post {
   @ManyToOne(() => User)
   @Field(() => User)
   user: User; //  포스트 작성자
+
+  @ManyToOne(() => Series)
+  @Field(() => Series)
+  series: Series;
 
   @JoinTable()
   @ManyToMany(() => Tag, (tags) => tags.posts)
