@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  backend-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/docker-server/src
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.docker
+
+  database-server:
+    image: mysql:latest
+    # platform: linux/x86_64
+    environment:
+      MYSQL_DATABASE: 'mcb-db'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - 3306:3306
