@@ -1,5 +1,6 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Series } from 'src/apis/series/entities/series.entity';
+import { User } from 'src/apis/users/entities/users.entity';
 import {
   Column,
   Entity,
@@ -26,4 +27,8 @@ export class SeriesReview {
   @ManyToOne(() => Series)
   @Field(() => Series)
   series: Series;
+
+  @ManyToOne(() => User)
+  @Field(() => User)
+  user: User;
 }
