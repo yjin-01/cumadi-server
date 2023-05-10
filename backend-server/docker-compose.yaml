@@ -9,6 +9,8 @@ services:
       - ./src:/docker-server/src
     ports:
       - 3000:3000
+    env_file:
+      - ./.env.docker
 
   database-server:
     image: mysql:latest
