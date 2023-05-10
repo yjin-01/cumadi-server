@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Field } from '@nestjs/graphql';
+import { Post } from 'src/apis/posts/entities/posts.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Image {
@@ -10,4 +12,8 @@ export class Image {
 
   @Column()
   thumbnail: boolean;
+
+  @ManyToOne(() => Post)
+  @Field(() => Post)
+  post: Post;
 }

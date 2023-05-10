@@ -1,5 +1,12 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Series } from 'src/apis/series/entities/series.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -15,4 +22,8 @@ export class SeriesReview {
   @Column({ type: 'decimal', precision: 2, scale: 1 })
   @Field(() => Float)
   rating: number;
+
+  @ManyToOne(() => Series)
+  @Field(() => Series)
+  series: Series;
 }

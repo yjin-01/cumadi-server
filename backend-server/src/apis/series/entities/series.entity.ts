@@ -1,9 +1,12 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { title } from 'process';
+import { SeriesCategory } from 'src/apis/seriesCategories/entities/seriesCategories.entity';
+import { User } from 'src/apis/users/entities/users.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -40,4 +43,12 @@ export class Series {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => SeriesCategory)
+  @Field(() => SeriesCategory)
+  category: SeriesCategory;
+
+  @ManyToOne(() => User)
+  @Field(() => User)
+  user: User;
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Post } from 'src/apis/posts/entities/posts.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -19,4 +20,7 @@ export class User {
 
   @Column({ nullable: true })
   introduction: string;
+
+  @ManyToMany(() => Post, (posts) => posts.users)
+  posts: Post;
 }
