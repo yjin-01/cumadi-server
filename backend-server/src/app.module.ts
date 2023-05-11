@@ -4,10 +4,12 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeriesModule } from './apis/series/series.module';
+import { SeriesCategoriesModule } from './apis/seriesCategories/seriesCategories.module';
 
 @Module({
   imports: [
     SeriesModule,
+    SeriesCategoriesModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/commons/grahql/schema.gql'),
