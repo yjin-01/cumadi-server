@@ -1,15 +1,20 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeriesModule } from './apis/series/series.module';
 import { SeriesCategoriesModule } from './apis/seriesCategories/seriesCategories.module';
+import { UsersModule } from './apis/users/users.module';
+import { AuthModule } from './apis/auth/auth.module';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
+    AuthModule,
     SeriesModule,
     SeriesCategoriesModule,
+    UsersModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/commons/grahql/schema.gql'),
@@ -25,6 +30,11 @@ import { SeriesCategoriesModule } from './apis/seriesCategories/seriesCategories
       entities: [__dirname + '/apis/**/*.entity.*'],
       synchronize: true,
       logging: true,
+    }),
+    CacheModule.register({
+      store: redisStore,
+      url: 'redis://redis-server:6379',
+      isGlobal: true,
     }),
   ],
   controllers: [],
