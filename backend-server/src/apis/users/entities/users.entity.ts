@@ -1,6 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Post } from 'src/apis/posts/entities/posts.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -27,6 +35,18 @@ export class User {
   @Column({ nullable: true })
   @Field(() => String)
   introduction: string;
+
+  @CreateDateColumn()
+  @Field(() => Date)
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  @Field(() => Date)
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  @Field(() => Date)
+  deleatedAt: Date;
 
   @ManyToMany(() => Post, (posts) => posts.users)
   @Field(() => Post)
