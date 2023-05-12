@@ -27,6 +27,14 @@ export class AuthResolver {
     return this.authService.logout({ context });
   }
 
+  @UseGuards(GqlAuthGuard('access'))
+  @Mutation(() => Boolean)
+  async resignUser(
+    @Context() context: IContext, //
+  ): Promise<boolean> {
+    return this.authService.resign({ context });
+  }
+
   @UseGuards(GqlAuthGuard('refresh'))
   @Mutation(() => String)
   restoreAccessToken(
