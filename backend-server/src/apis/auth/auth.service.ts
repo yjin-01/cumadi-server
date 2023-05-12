@@ -13,6 +13,7 @@ import {
   IAuthServiceLogin,
   IAuthServiceRestoreAccessToken,
   IAuthServiceSetRefreshToken,
+  IAuthServiceUserDelete,
 } from './interfaces/auth-service.interface';
 import { Cache } from 'cache-manager';
 import * as jwt from 'jsonwebtoken';
@@ -95,6 +96,16 @@ export class AuthService {
       return true;
     } catch (e) {
       throw new UnauthorizedException();
+    }
+  }
+
+  async resign({ context }: IAuthServiceUserDelete): Promise<boolean> {
+    const resignResult = await this.usersService.resign({
+      userId: context.req.user.userId,
+    });
+    if (resignResult) {
+      const tokenExpired = await this.logout({ context });
+      return tokenExpired;
     }
   }
 

@@ -19,3 +19,7 @@ export interface IAuthServiceSetRefreshToken {
 export interface IAuthServiceRestoreAccessToken {
   user: IAuthUser['user'];
 }
+
+export interface IAuthServiceUserDelete {
+  context: IContext;
+}
