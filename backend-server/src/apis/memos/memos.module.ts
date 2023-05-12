@@ -3,21 +3,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Memo } from './entities/memos.entity';
 import { MemoResolver } from './memos.resolver';
 import { MemoService } from './memos.service';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/entities/users.entity';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Memo, //
-      User,
     ]),
+    UsersModule,
   ],
 
   providers: [
     MemoResolver, //
     MemoService,
-    UsersService,
   ],
 })
 export class MemosModule {}

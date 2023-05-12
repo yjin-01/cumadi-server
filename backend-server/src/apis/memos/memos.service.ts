@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Memo } from './entities/memos.entity';
 import { Repository } from 'typeorm';
@@ -18,25 +18,25 @@ export class MemoService {
     userId, //
     parse,
   }: IMemoServiceCreate): Promise<Memo> {
-    try {
-      const user = await this.usersService.findOneById({ userId });
-      const createdMemo = this.memosRepository.create({
-        parse,
-        user,
-      });
+    const user = await this.usersService.findOneById({ userId });
+    if (!user) throw new UnauthorizedException();
 
-      const result = await this.memosRepository.save(createdMemo);
+    const createdMemo = this.memosRepository.create({
+      parse,
+      user,
+    });
 
-      return result;
-    } catch (e) {
-      throw e;
-    }
+    const result = await this.memosRepository.save(createdMemo);
+
+    return result;
   }
 
   async fetchMemos({
     userId, //
   }): Promise<Memo[]> {
     const user = await this.usersService.findOneById({ userId });
+    if (!user) throw new UnauthorizedException();
+
     const result = await this.memosRepository.find({
       relations: ['user'],
     });
@@ -48,6 +48,9 @@ export class MemoService {
     memoId, //
     userId,
   }): Promise<boolean> {
+    const user = await this.usersService.findOneById({ userId });
+    if (!user) throw new UnauthorizedException();
+
     const memo = await this.memosRepository.softDelete({
       memoId,
       user: userId,
