@@ -9,6 +9,8 @@ import { UsersModule } from './apis/users/users.module';
 import { AuthModule } from './apis/auth/auth.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { MemosModule } from './apis/memos/memos.module';
+import { SeriesReviewModule } from './apis/seriesReviews/seriesReviews.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { MemosModule } from './apis/memos/memos.module';
     MemosModule,
     SeriesModule,
     SeriesCategoriesModule,
+    SeriesReviewModule,
     UsersModule,
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/commons/grahql/schema.gql'),
