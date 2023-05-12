@@ -8,10 +8,12 @@ import { SeriesCategoriesModule } from './apis/seriesCategories/seriesCategories
 import { UsersModule } from './apis/users/users.module';
 import { AuthModule } from './apis/auth/auth.module';
 import * as redisStore from 'cache-manager-redis-store';
+import { MemosModule } from './apis/memos/memos.module';
 
 @Module({
   imports: [
     AuthModule,
+    MemosModule,
     SeriesModule,
     SeriesCategoriesModule,
     UsersModule,
