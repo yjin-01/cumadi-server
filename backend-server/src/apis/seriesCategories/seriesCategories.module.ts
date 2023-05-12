@@ -14,5 +14,8 @@ import { SeriesCategory } from './entities/seriesCategories.entity';
     SeriesCategoriesResolver, //
     SeriesCategoriesService,
   ],
+  exports: [
+    SeriesCategoriesService, //
+  ],
 })
 export class SeriesCategoriesModule {}
