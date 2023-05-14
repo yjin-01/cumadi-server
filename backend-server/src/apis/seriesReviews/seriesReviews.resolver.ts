@@ -1,4 +1,12 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  Float,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+} from '@nestjs/graphql';
 import { SeriesReviewsService } from './seriesReviews.service';
 import { SeriesReview } from './entities/seriesReviews.entity';
 import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
@@ -22,6 +30,14 @@ export class SeriesReviewsResolver {
     @Args('seriesId') seriesId: string,
   ): Promise<SeriesReview[]> {
     return this.seriesReviewsServise.findBySeries({ seriesId });
+  }
+
+  // 시리즈별 별점 조회
+  @Query(() => Float)
+  fetchRatingBySeries(
+    @Args('seriesId') seriesId: string, //
+  ) {
+    return this.seriesReviewsServise.findSeriesRating({ seriesId });
   }
 
   @UseGuards(GqlAuthGuard('access'))
