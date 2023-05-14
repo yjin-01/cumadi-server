@@ -34,6 +34,19 @@ export class SeriesReviewsService {
     });
   }
 
+  async findSeriesRating({ seriesId }: ISeriesReviewsServicefindBySeries) {
+    const result = await this.seriesReviewRepository
+      .createQueryBuilder('review')
+      .select('Avg(review.rating)', 'rating')
+      .leftJoinAndSelect('review.series', 'series')
+      .where('review.series = :seriesId', { seriesId })
+      .getRawOne();
+
+    console.log(result.rating);
+
+    return result.rating;
+  }
+
   create({
     createSeriesReviewInput,
     user,
