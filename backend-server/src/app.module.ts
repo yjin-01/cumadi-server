@@ -14,11 +14,15 @@ import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './apis/posts/posts.module';
 import { TagsModule } from './apis/tags/tags.module';
 import { StatisticModule } from './apis/statistics/statistics.module';
+import { PaymentsModule } from './apis/payments/payments.module';
+import { PaymentDetailsModule } from './apis/paymentDetails/paymentDetails.module';
 
 @Module({
   imports: [
     AuthModule,
     MemosModule,
+    PaymentsModule,
+    PaymentDetailsModule,
     PostsModule,
     SeriesModule,
     SeriesCategoriesModule,
