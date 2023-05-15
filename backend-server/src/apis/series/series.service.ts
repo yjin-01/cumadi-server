@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Series } from './entities/series.entity';
 import { Repository } from 'typeorm';
@@ -11,6 +11,7 @@ import {
   ISeriesServiceFindOne,
   ISeriesServiceUpdate,
 } from './interfaces/series-service.interface';
+import { PostsService } from '../posts/posts.service';
 
 @Injectable()
 export class SeriesService {
@@ -19,6 +20,9 @@ export class SeriesService {
     private readonly seriesRepository: Repository<Series>,
 
     private readonly seriesCategoriesService: SeriesCategoriesService,
+
+    @Inject(forwardRef(() => PostsService))
+    private readonly postsService: PostsService,
   ) {}
 
   findAll(): Promise<Series[]> {
@@ -61,30 +65,51 @@ export class SeriesService {
     createSeriesInput,
     user,
   }: ISeriesServiceCreate): Promise<Series> {
-    const { categoryId, ...rest } = createSeriesInput;
+    const { categoryId, posts, ...rest } = createSeriesInput;
     const category = await this.seriesCategoriesService.findOne({ categoryId });
 
-    return this.seriesRepository.save({
+    const series = await this.seriesRepository.save({
       ...rest,
       category: category,
       user: { userId: user },
     });
+    const postArr = [];
+    posts.forEach((el) => {
+      postArr.push({ postId: el, series: series.seriesId });
+    });
+
+    const post = await this.postsService.updateSeries({
+      postArr,
+    });
+
+    return series;
   }
 
   async update({
     updateSeriesInput,
     seriesId,
   }: ISeriesServiceUpdate): Promise<Series> {
-    const { categoryId, ...rest } = updateSeriesInput;
+    const { categoryId, posts, ...rest } = updateSeriesInput;
     const series = await this.findOne({ seriesId });
 
     const category = await this.seriesCategoriesService.findOne({ categoryId });
 
-    return this.seriesRepository.save({
+    const updateSeries = await this.seriesRepository.save({
       ...series,
       ...rest,
       category: category,
     });
+
+    const postArr = [];
+    posts.forEach((el) => {
+      postArr.push({ postId: el, series: series.seriesId });
+    });
+
+    const post = await this.postsService.updateSeries({
+      postArr,
+    });
+
+    return updateSeries;
   }
 
   async delete({ seriesId }: ISeriesServiceDelete) {

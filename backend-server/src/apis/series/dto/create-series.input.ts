@@ -19,4 +19,7 @@ export class CreateSeriesInput {
 
   @Field(() => String)
   categoryId: string;
+
+  @Field(() => [String], { nullable: true })
+  posts?: string[];
 }

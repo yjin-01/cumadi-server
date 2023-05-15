@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  UnauthorizedException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './entities/posts.entity';
@@ -19,6 +24,8 @@ export class PostsService {
     private readonly postsRepository: Repository<Post>, //
 
     private readonly usersService: UsersService,
+
+    @Inject(forwardRef(() => SeriesService))
     private readonly seriesService: SeriesService,
     private readonly tagsService: TagsService,
     private readonly statisticsService: StatisticsService,
@@ -110,6 +117,10 @@ export class PostsService {
     return await this.findOne({
       postId,
     });
+  }
+
+  updateSeries({ postArr }) {
+    return this.postsRepository.save(postArr);
   }
 
   async delete({
