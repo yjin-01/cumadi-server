@@ -37,18 +37,16 @@ export class User {
   introduction: string;
 
   @CreateDateColumn()
-  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
-  @Field(() => Date)
   updatedAt: Date;
 
   @DeleteDateColumn()
   @Field(() => Date)
   deleatedAt: Date;
 
-  @ManyToMany(() => Post, (posts) => posts.users)
+  @ManyToMany(() => Post, (posts) => posts.user)
   @Field(() => Post)
   posts: Post;
 }
