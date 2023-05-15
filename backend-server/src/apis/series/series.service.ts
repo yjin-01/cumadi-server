@@ -6,6 +6,7 @@ import { SeriesCategoriesService } from '../seriesCategories/seriesCategories.se
 import {
   ISeriesServiceCreate,
   ISeriesServiceDelete,
+  ISeriesServiceFindByCategory,
   ISeriesServiceFindByUser,
   ISeriesServiceFindOne,
   ISeriesServiceUpdate,
@@ -33,9 +34,25 @@ export class SeriesService {
     });
   }
 
+  findFreeSeries({ categoryId }): Promise<Series[]> {
+    return this.seriesRepository.find({
+      where: { paid: false, category: { categoryId } },
+      relations: ['category', 'user'],
+    });
+  }
+
   findByUser({ user }: ISeriesServiceFindByUser): Promise<Series[]> {
     return this.seriesRepository.find({
       where: { user: { userId: user } },
+      relations: ['category', 'user'],
+    });
+  }
+
+  findByCategory({
+    categoryId,
+  }: ISeriesServiceFindByCategory): Promise<Series[]> {
+    return this.seriesRepository.find({
+      where: { category: { categoryId } },
       relations: ['category', 'user'],
     });
   }

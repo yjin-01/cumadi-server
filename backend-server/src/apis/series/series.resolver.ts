@@ -25,15 +25,28 @@ export class SeriesResolver {
     return this.seriesService.findOne({ seriesId });
   }
 
+  @Query(() => [Series])
+  fetchFreeSeries(
+    @Args('categoryId', { nullable: true }) categoryId: string, //
+  ): Promise<Series[]> {
+    return this.seriesService.findFreeSeries({ categoryId });
+  }
+
   @UseGuards(GqlAuthGuard('access'))
   @Query(() => [Series])
   fetchSeriesByUser(
     @Context() context: IContext, //
   ): Promise<Series[]> {
-    console.log(context.req.user);
     const user = context.req.user.userId;
 
     return this.seriesService.findByUser({ user });
+  }
+
+  @Query(() => [Series])
+  fetchSeriesByCategory(
+    @Args('categoryId', { nullable: true }) categoryId: string, //
+  ): Promise<Series[]> {
+    return this.seriesService.findByCategory({ categoryId });
   }
 
   @UseGuards(GqlAuthGuard('access'))
