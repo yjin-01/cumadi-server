@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
-export class Statistic {
+export class Statistics {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   statisticId: string;

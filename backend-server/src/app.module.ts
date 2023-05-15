@@ -11,14 +11,20 @@ import * as redisStore from 'cache-manager-redis-store';
 import { MemosModule } from './apis/memos/memos.module';
 import { SeriesReviewModule } from './apis/seriesReviews/seriesReviews.module';
 import { ConfigModule } from '@nestjs/config';
+import { PostsModule } from './apis/posts/posts.module';
+import { TagsModule } from './apis/tags/tags.module';
+import { StatisticModule } from './apis/statistics/statistics.module';
 
 @Module({
   imports: [
     AuthModule,
     MemosModule,
+    PostsModule,
     SeriesModule,
     SeriesCategoriesModule,
     SeriesReviewModule,
+    StatisticModule,
+    TagsModule,
     UsersModule,
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({

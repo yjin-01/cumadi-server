@@ -14,5 +14,8 @@ import { SeriesCategoriesModule } from '../seriesCategories/seriesCategories.mod
     SeriesResolver, //
     SeriesService,
   ],
+  exports: [
+    SeriesService, //
+  ],
 })
 export class SeriesModule {}

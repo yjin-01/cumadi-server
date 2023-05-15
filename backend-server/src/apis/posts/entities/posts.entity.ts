@@ -5,6 +5,7 @@ import { User } from 'src/apis/users/entities/users.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -34,21 +35,20 @@ export class Post {
   @UpdateDateColumn()
   uodatedAt: Date;
 
+  @DeleteDateColumn()
+  @Field(() => Date)
+  deletedAt: Date;
+
   @ManyToOne(() => User)
   @Field(() => User)
   user: User; //  포스트 작성자
 
-  @ManyToOne(() => Series)
-  @Field(() => Series)
-  series: Series;
+  @ManyToOne(() => Series, { nullable: true })
+  @Field(() => Series, { nullable: true })
+  series?: Series;
 
   @JoinTable()
   @ManyToMany(() => Tag, (tags) => tags.posts)
-  @Field(() => [Tag])
-  tags: Tag[];
-
-  @JoinTable()
-  @ManyToMany(() => User, (users) => users.posts)
-  // @Field(() => User) // Playground X
-  users: User; // 좋아요 누른 사람들
+  @Field(() => [Tag], { nullable: true })
+  tags?: Tag[];
 }
