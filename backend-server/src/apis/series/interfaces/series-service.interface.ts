@@ -9,6 +9,10 @@ export interface ISeriesServiceFindByUser {
   user: string;
 }
 
+export interface ISeriesServiceFindByCategory {
+  categoryId: string;
+}
+
 export interface ISeriesServiceCreate {
   createSeriesInput: CreateSeriesInput;
   user: string;

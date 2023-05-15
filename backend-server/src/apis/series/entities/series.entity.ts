@@ -39,9 +39,11 @@ export class Series {
   paid: boolean;
 
   @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Field(() => Date)
   updatedAt: Date;
 
   @ManyToOne(() => SeriesCategory)
