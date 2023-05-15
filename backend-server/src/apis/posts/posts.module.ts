@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './entities/posts.entity';
 import { PostsResolver } from './posts.resolver';
@@ -14,7 +14,7 @@ import { StatisticModule } from '../statistics/statistics.module';
       Post, //
     ]),
     UsersModule,
-    SeriesModule,
+    forwardRef(() => SeriesModule),
     TagsModule,
     StatisticModule,
   ],
