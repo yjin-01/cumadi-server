@@ -1,6 +1,9 @@
 import { CreateSeriesInput } from '../dto/create-series.input';
 import { UpdateSeriesInput } from '../dto/update-series.input';
 
+export interface ISeriesServicefindAllByCart {
+  seriesList: [string];
+}
 export interface ISeriesServiceFindOne {
   seriesId: string;
 }
