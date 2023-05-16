@@ -42,7 +42,7 @@ export class AuthService {
     if (!isAuth)
       throw new UnprocessableEntityException('암호를 확인해 주세요.');
 
-    this.setRefreshToken({ user, context });
+    // this.setRefreshToken({ user, context });
     return this.getAccessToken({ user });
   }
 
@@ -51,23 +51,23 @@ export class AuthService {
       'Bearer ',
       '',
     );
-    const refreshToken = context.req.headers.cookie.replace(
-      'refreshToken=',
-      '',
-    );
+    // const refreshToken = context.req.headers.cookie.replace(
+    //   'refreshToken=',
+    //   '',
+    // );
 
     try {
       const correctAccess: any = jwt.verify(
         accessToken, //
         process.env.JWT_ACCESS_KEY,
       );
-      const correctRefresh: any = jwt.verify(
-        refreshToken, //
-        process.env.JWT_REFRESH_KEY,
-      );
+      // const correctRefresh: any = jwt.verify(
+      //   refreshToken, //
+      //   process.env.JWT_REFRESH_KEY,
+      // );
 
       const accessTtl = correctAccess.exp - correctAccess.iat;
-      const refreshTtl = correctRefresh.exp - correctRefresh.iat;
+      // const refreshTtl = correctRefresh.exp - correctRefresh.iat;
 
       await this.cacheManager.set(
         `accessToken:${accessToken}`, //
@@ -76,22 +76,22 @@ export class AuthService {
           ttl: accessTtl,
         },
       );
-      await this.cacheManager.set(
-        `refreshToken:${refreshToken}`, //
-        'refreshToken',
-        {
-          ttl: refreshTtl,
-        },
-      );
+      // await this.cacheManager.set(
+      //   `refreshToken:${refreshToken}`, //
+      //   'refreshToken',
+      //   {
+      //     ttl: refreshTtl,
+      //   },
+      // );
 
       const redisAccess = await this.cacheManager.get(
         `accessToken:${accessToken}`,
       );
-      const redisRefresh = await this.cacheManager.get(
-        `refreshToken:${refreshToken}`,
-      );
+      // const redisRefresh = await this.cacheManager.get(
+      //   `refreshToken:${refreshToken}`,
+      // );
 
-      if (!redisAccess || !redisRefresh) throw new UnauthorizedException();
+      if (!redisAccess) throw new UnauthorizedException();
 
       return true;
     } catch (e) {
@@ -121,14 +121,15 @@ export class AuthService {
 
     context.res.setHeader(
       'set-Cookie',
-      `refreshToken=${refreshToken}; path=/;`,
+      `refreshToken=${refreshToken}; path=/; SameSite=None; Secure; httpOnly;`,
     );
   }
 
   getAccessToken({ user }: IAuthServiceGetAccessToken): string {
     return this.jwtService.sign(
       { sub: user.userId },
-      { secret: process.env.JWT_ACCESS_KEY, expiresIn: '1h' },
+      // { secret: process.env.JWT_ACCESS_KEY, expiresIn: '1h' },
+      { secret: process.env.JWT_ACCESS_KEY, expiresIn: '1d' },
     );
   }
 }
