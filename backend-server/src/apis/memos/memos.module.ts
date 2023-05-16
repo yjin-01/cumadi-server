@@ -4,6 +4,7 @@ import { Memo } from './entities/memos.entity';
 import { MemoResolver } from './memos.resolver';
 import { MemoService } from './memos.service';
 import { UsersModule } from '../users/users.module';
+import { PostsModule } from '../posts/posts.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UsersModule } from '../users/users.module';
       Memo, //
     ]),
     UsersModule,
+    PostsModule,
   ],
 
   providers: [

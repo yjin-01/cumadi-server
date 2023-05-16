@@ -20,6 +20,14 @@ export class Memo {
   @Field(() => String)
   parse: string;
 
+  @Column()
+  @Field(() => String)
+  title: string;
+
+  @Column()
+  @Field(() => String)
+  author: string;
+
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;

@@ -4,6 +4,7 @@ import { Memo } from './entities/memos.entity';
 import { Repository } from 'typeorm';
 import { IMemoServiceCreate } from './interfaces/memos-service.interface';
 import { UsersService } from '../users/users.service';
+import { PostsService } from '../posts/posts.service';
 
 @Injectable()
 export class MemoService {
@@ -12,17 +13,25 @@ export class MemoService {
     private readonly memosRepository: Repository<Memo>, //
 
     private readonly usersService: UsersService,
+
+    private readonly postsService: PostsService, //
   ) {}
 
   async createMemo({
     userId, //
+    postId,
     parse,
   }: IMemoServiceCreate): Promise<Memo> {
     const user = await this.usersService.findOneById({ userId });
     if (!user) throw new UnauthorizedException();
 
+    const post = await this.postsService.findOne({ postId });
+    if (!post) throw new Error("post dosen't exist");
+
     const createdMemo = this.memosRepository.create({
       parse,
+      title: post.title,
+      author: post.user.nickname,
       user,
     });
 

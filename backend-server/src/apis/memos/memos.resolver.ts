@@ -14,11 +14,13 @@ export class MemoResolver {
   @UseGuards(GqlAuthGuard('access'))
   @Mutation(() => Memo)
   async createPostMemo(
+    @Args('postId') postId: string,
     @Args('parse') parse: string,
     @Context() context: IContext,
   ) {
     return this.memoService.createMemo({
       parse,
+      postId,
       userId: context.req.user.userId,
     });
   }
