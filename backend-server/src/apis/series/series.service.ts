@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Series } from './entities/series.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { SeriesCategoriesService } from '../seriesCategories/seriesCategories.service';
 import {
   ISeriesServiceCreate,
@@ -10,6 +10,7 @@ import {
   ISeriesServiceFindByUser,
   ISeriesServiceFindOne,
   ISeriesServiceUpdate,
+  ISeriesServicefindAllByCart,
 } from './interfaces/series-service.interface';
 import { PostsService } from '../posts/posts.service';
 
@@ -34,6 +35,15 @@ export class SeriesService {
   findOne({ seriesId }: ISeriesServiceFindOne): Promise<Series> {
     return this.seriesRepository.findOne({
       where: { seriesId },
+      relations: ['category', 'user'],
+    });
+  }
+
+  findAllByCart({
+    seriesList,
+  }: ISeriesServicefindAllByCart): Promise<Series[]> {
+    return this.seriesRepository.find({
+      where: { seriesId: In(seriesList) },
       relations: ['category', 'user'],
     });
   }

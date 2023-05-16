@@ -16,6 +16,7 @@ import { TagsModule } from './apis/tags/tags.module';
 import { StatisticModule } from './apis/statistics/statistics.module';
 import { PaymentsModule } from './apis/payments/payments.module';
 import { PaymentDetailsModule } from './apis/paymentDetails/paymentDetails.module';
+import { shoppingCartModule } from './apis/shoppingCart/shoppingCart.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PaymentDetailsModule } from './apis/paymentDetails/paymentDetails.modul
     SeriesModule,
     SeriesCategoriesModule,
     SeriesReviewModule,
+    shoppingCartModule,
     StatisticModule,
     TagsModule,
     UsersModule,
