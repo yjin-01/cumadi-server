@@ -26,7 +26,7 @@ export class StatisticsService {
       todayViews = await this.statisticsRepository.save({
         post: postId,
         date: nowDate,
-        view: -1,
+        view: 0,
       });
     }
 
