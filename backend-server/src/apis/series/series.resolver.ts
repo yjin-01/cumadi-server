@@ -6,6 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { IContext } from 'src/commons/interfaces/context';
 import { UpdateSeriesInput } from './dto/update-series.input';
+import { IFetchSeriesReturn } from './interfaces/series-return.type';
 
 @Resolver()
 export class SeriesResolver {
@@ -18,10 +19,10 @@ export class SeriesResolver {
     return this.seriesService.findAll();
   }
 
-  @Query(() => Series)
+  @Query(() => IFetchSeriesReturn)
   fetchSeries(
     @Args('seriesId') seriesId: string, //
-  ): Promise<Series> {
+  ): Promise<IFetchSeriesReturn> {
     return this.seriesService.findOne({ seriesId });
   }
 
