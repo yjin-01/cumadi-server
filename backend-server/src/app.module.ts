@@ -17,10 +17,12 @@ import { StatisticModule } from './apis/statistics/statistics.module';
 import { PaymentsModule } from './apis/payments/payments.module';
 import { PaymentDetailsModule } from './apis/paymentDetails/paymentDetails.module';
 import { shoppingCartModule } from './apis/shoppingCart/shoppingCart.module';
+import { LikeModule } from './apis/like/like.module';
 
 @Module({
   imports: [
     AuthModule,
+    LikeModule,
     MemosModule,
     PaymentsModule,
     PaymentDetailsModule,

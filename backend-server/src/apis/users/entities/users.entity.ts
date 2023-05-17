@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -45,8 +44,4 @@ export class User {
   @DeleteDateColumn()
   @Field(() => Date)
   deleatedAt: Date;
-
-  @ManyToMany(() => Post, (posts) => posts.user)
-  @Field(() => Post)
-  posts: Post;
 }
