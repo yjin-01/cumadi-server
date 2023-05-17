@@ -12,7 +12,7 @@ export class StatisticsService {
 
   // 조회수 증가
   async updateView({ postId }): Promise<boolean> {
-    const curTime = new Date();
+    const curTime = new Date('2023-05-18');
     const utc = curTime.getTime() + curTime.getTimezoneOffset() * 60 * 1000;
     const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
     const nowDate = new Date(new Date(utc + KR_TIME_DIFF).setHours(0, 0, 0, 0));
@@ -26,7 +26,7 @@ export class StatisticsService {
       todayViews = await this.statisticsRepository.save({
         post: postId,
         date: nowDate,
-        view: -1,
+        view: 0,
       });
     }
 
