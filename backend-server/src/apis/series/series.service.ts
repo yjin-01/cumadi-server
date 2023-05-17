@@ -13,6 +13,7 @@ import {
   ISeriesServicefindAllByCart,
 } from './interfaces/series-service.interface';
 import { PostsService } from '../posts/posts.service';
+import { IFetchSeriesReturn } from './interfaces/series-return.type';
 
 @Injectable()
 export class SeriesService {
@@ -32,11 +33,22 @@ export class SeriesService {
     });
   }
 
-  findOne({ seriesId }: ISeriesServiceFindOne): Promise<Series> {
-    return this.seriesRepository.findOne({
+  async findOne({
+    seriesId,
+  }: ISeriesServiceFindOne): Promise<IFetchSeriesReturn> {
+    const series = await this.seriesRepository.findOne({
       where: { seriesId },
       relations: ['category', 'user'],
     });
+
+    const post = await this.postsService.findBySeries({ seriesId });
+
+    if (post) {
+      series['post'] = [...post];
+      return series;
+    }
+
+    return series;
   }
 
   findAllByCart({

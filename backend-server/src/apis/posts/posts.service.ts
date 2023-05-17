@@ -10,6 +10,7 @@ import { Post } from './entities/posts.entity';
 import {
   IPostServiceCreate,
   IPostServiceDelete,
+  IPostServiceFindBySeries,
   IPostServiceUpdate,
 } from './interfaces/posts-service.interface';
 import { UsersService } from '../users/users.service';
@@ -57,6 +58,13 @@ export class PostsService {
     });
 
     return result;
+  }
+
+  async findBySeries({ seriesId }: IPostServiceFindBySeries): Promise<Post[]> {
+    return await this.postsRepository.find({
+      where: { series: { seriesId } },
+      relations: ['series', 'tags', 'user'],
+    });
   }
 
   findAllOfMine({ userId }): Promise<Post[]> {

@@ -1,6 +1,10 @@
 import { CreatePostInput } from '../dto/create-post-input';
 import { UpdatePostInput } from '../dto/update-post-input';
 
+export interface IPostServiceFindBySeries {
+  seriesId: string;
+}
+
 export interface IPostServiceCreate {
   userId: string;
   createPostInput: CreatePostInput;
