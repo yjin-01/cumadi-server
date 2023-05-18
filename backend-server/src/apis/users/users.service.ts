@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/users.entity';
@@ -54,9 +59,23 @@ export class UsersService {
   }
 
   async updatePassword({
+    currentPassword,
     newPassword,
     userId,
   }: IUsersServiceUpdatePassword): Promise<boolean> {
+    const user = await this.findOneById({ userId });
+    const isCorrect = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isCorrect)
+      throw new UnauthorizedException('기존 비밀번호가 틀립니다.');
+
+    const isDuplicated = await bcrypt.compare(newPassword, user.password);
+
+    if (isDuplicated)
+      throw new ForbiddenException(
+        '기존 비밀번호와 동일한 비밀번호로 수정할 수 없습니다.',
+      );
+
     const password = await bcrypt.hash(newPassword, 10);
     const result = await this.usersRepository.update({ userId }, { password });
     return result.affected ? true : false;

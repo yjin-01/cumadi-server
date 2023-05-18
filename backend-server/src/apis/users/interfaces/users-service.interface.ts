@@ -21,6 +21,7 @@ export interface IUsersServiceFindOneById {
 export interface IUsersServiceUpdatePassword {
   userId: string;
   newPassword: string;
+  currentPassword: string;
 }
 
 export interface IUsersServiceDelete {
