@@ -38,11 +38,11 @@ export class Post {
   description: string;
 
   @CreateDateColumn()
-  @Field(() => String)
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
-  @Field(() => String)
+  @Field(() => Date)
   uodatedAt: Date;
 
   @DeleteDateColumn()
