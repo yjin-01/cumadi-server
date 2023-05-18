@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Post } from 'src/apis/posts/entities/posts.entity';
 import {
   Column,
   CreateDateColumn,
@@ -28,11 +27,11 @@ export class User {
   nickname: string;
 
   @Column({ nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   image: string;
 
   @Column({ nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   introduction: string;
 
   @CreateDateColumn()
