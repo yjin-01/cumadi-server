@@ -29,10 +29,20 @@ export class Post {
   @Field(() => String)
   content: string;
 
+  @Column()
+  @Field(() => String)
+  image: string;
+
+  @Column()
+  @Field(() => String)
+  description: string;
+
   @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Field(() => Date)
   uodatedAt: Date;
 
   @DeleteDateColumn()

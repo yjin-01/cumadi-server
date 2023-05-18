@@ -1,6 +1,7 @@
 import {
   Inject,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
   forwardRef,
 } from '@nestjs/common';
@@ -46,7 +47,8 @@ export class PostsService {
       where: { postId },
       relations: ['series', 'tags', 'user'],
     });
-    if (!result) throw new Error("post dosen't exist");
+    if (!result)
+      throw new NotFoundException('존재하지 않는 포스트 아이디입니다.');
     this.statisticsService.updateView({ postId: result.postId }); // 조회수 증가
 
     return result;
@@ -78,23 +80,24 @@ export class PostsService {
     createPostInput, //
     userId,
   }: IPostServiceCreate): Promise<Post> {
-    const { title, content, seriesId, tags } = createPostInput;
+    const { seriesId, tags } = createPostInput;
 
     const user = await this.usersService.findOneById({ userId });
+    if (!user) throw new NotFoundException('존재하지 않는 유저입니다.');
     const series = await this.seriesService.findOne({
       seriesId: seriesId ?? '',
     });
+
     const completeTags = await this.tagsService.tagGenerator({ tags });
 
     const result = await this.postsRepository.save({
-      title,
-      content,
+      ...createPostInput,
       user,
       series,
       tags: completeTags,
     });
-    console.log(seriesId);
-    return this.findOneWithUpdateView({
+
+    return this.findOne({
       postId: result.postId,
     });
   }
