@@ -87,6 +87,7 @@ export class PostsService {
     const series = await this.seriesService.findOne({
       seriesId: seriesId ?? '',
     });
+
     const completeTags = await this.tagsService.tagGenerator({ tags });
 
     const result = await this.postsRepository.save({
