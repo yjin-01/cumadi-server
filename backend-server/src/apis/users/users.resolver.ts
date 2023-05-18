@@ -44,10 +44,12 @@ export class UsersResolver {
   @Mutation(() => Boolean)
   async updateUserPassword(
     @Context() context: IContext, //
+    @Args('currentPassword') currentPassword: string,
     @Args('newPassword') newPassword: string,
   ): Promise<boolean> {
     return this.usersService.updatePassword({
       userId: context.req.user.userId,
+      currentPassword,
       newPassword,
     });
   }
