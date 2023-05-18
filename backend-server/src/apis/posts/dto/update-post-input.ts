@@ -9,6 +9,12 @@ export class UpdatePostInput {
   content: string;
 
   @Field(() => String, { nullable: true })
+  image: string;
+
+  @Field(() => String, { nullable: true })
+  description: string;
+
+  @Field(() => String, { nullable: true })
   seriesId: string;
 
   @Field(() => [String], { nullable: true })
