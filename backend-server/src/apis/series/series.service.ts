@@ -43,7 +43,7 @@ export class SeriesService {
 
     const post = await this.postsService.findBySeries({ seriesId });
 
-    if (post) {
+    if (post.length !== 0) {
       series['post'] = [...post];
       return series;
     }

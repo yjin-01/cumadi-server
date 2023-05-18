@@ -2,7 +2,6 @@ import {
   Args,
   Context,
   Float,
-  Int,
   Mutation,
   Query,
   Resolver,
@@ -47,7 +46,7 @@ export class SeriesReviewsResolver {
     createSeriesReviewInput: CreateSeriesReviewInput,
     @Context() context: IContext,
   ): Promise<SeriesReview> {
-    const user = context.req.user.userId;
+    const user = context.req.user;
     return this.seriesReviewsServise.create({ createSeriesReviewInput, user });
   }
 
@@ -57,8 +56,11 @@ export class SeriesReviewsResolver {
     @Args('reviewId') reviewId: string,
     @Args('updateSeriesReviewInput')
     updateSeriesReviewInput: UpdateSeriesReviewInput,
+    @Context() context: IContext, //
   ): Promise<SeriesReview> {
+    const user = context.req.user;
     return this.seriesReviewsServise.update({
+      user,
       reviewId,
       updateSeriesReviewInput,
     });
@@ -68,7 +70,9 @@ export class SeriesReviewsResolver {
   @Mutation(() => Boolean)
   deleteSeriesReview(
     @Args('reviewId') reviewId: string, //
+    @Context() context: IContext,
   ): Promise<boolean> {
-    return this.seriesReviewsServise.delete({ reviewId });
+    const user = context.req.user;
+    return this.seriesReviewsServise.delete({ reviewId, user });
   }
 }
