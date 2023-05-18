@@ -2,6 +2,11 @@ import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Series } from '../series/entities/series.entity';
 import { SeriesService } from '../series/series.service';
+import {
+  IShoppingCartServiceDelete,
+  IShoppingCartServiceFindAll,
+  IShoppingCartServiceInsert,
+} from './interfaces/shoppingCart-service.interface';
 
 @Injectable()
 export class shoppingCartService {
@@ -12,7 +17,7 @@ export class shoppingCartService {
     private readonly seriesService: SeriesService,
   ) {}
 
-  async findAll({ user }) {
+  async findAll({ user }: IShoppingCartServiceFindAll): Promise<Series[]> {
     const seriesList: [string] = await this.cacheManager.get(
       `cart:${user.userId}`,
     );
@@ -24,9 +29,13 @@ export class shoppingCartService {
     return this.seriesService.findAllByCart({ seriesList });
   }
 
-  async insert({ seriesId, user }): Promise<Series> {
-    let cartValue = [];
-    cartValue = await this.cacheManager.get(`cart:${user.userId}`);
+  async insert({
+    seriesId,
+    user,
+  }: IShoppingCartServiceInsert): Promise<Series> {
+    let cartValue: [string?] = await this.cacheManager.get(
+      `cart:${user.userId}`,
+    );
 
     if (!cartValue) {
       cartValue = [];
@@ -41,7 +50,10 @@ export class shoppingCartService {
     return series;
   }
 
-  async delete({ seriesId, user }): Promise<boolean> {
+  async delete({
+    seriesId,
+    user,
+  }: IShoppingCartServiceDelete): Promise<boolean> {
     const cartVal: [string] = await this.cacheManager.get(
       `cart:${user.userId}`,
     );

@@ -15,7 +15,7 @@ export class shoppingCartResolver {
   @Query(() => [Series])
   fetchShoppingCart(
     @Context() context: IContext, //
-  ) {
+  ): Promise<Series[]> {
     const user = context.req.user;
     return this.shoppingCartService.findAll({ user });
   }
