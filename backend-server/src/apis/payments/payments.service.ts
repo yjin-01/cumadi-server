@@ -3,7 +3,6 @@ import { Payment } from './entities/payments.entity';
 import { Repository } from 'typeorm';
 import { PaymentDetailsService } from '../paymentDetails/paymentDetails.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaymentDetail } from '../paymentDetails/entities/paymentDetails.entity';
 import {
   IPaymentServiceCheckDuplication,
   IPaymentServiceFindOneByImpUid,
@@ -11,6 +10,7 @@ import {
   IPaymentsServiceCreateFreeSeries,
 } from './interfaces/payments-service.interface';
 import { IamportService } from '../iamport/iamport.service';
+import { shoppingCartService } from '../shoppingCart/shoppingCart.service';
 
 @Injectable()
 export class PaymentsService {
@@ -21,6 +21,8 @@ export class PaymentsService {
     private readonly paymentDetailsService: PaymentDetailsService,
 
     private readonly iamportService: IamportService,
+
+    private readonly shoppingCartService: shoppingCartService,
   ) {}
 
   findOneByImpUid({
@@ -44,7 +46,7 @@ export class PaymentsService {
 
     await this.iamportService.checkPaid({ impUid, amount }); // 결제완료 상태인지 검증하기
     await this.checkDuplication({ impUid }); // 이미 결제됐던 id인지 검증하기
-    console.log('----------');
+
     // 결제 내역 저장
     const payment = await this.paymentRepository.save({
       impUid,
@@ -58,6 +60,8 @@ export class PaymentsService {
       user: user.userId,
       seriesList,
     });
+
+    await this.shoppingCartService.deleteSeriesList({ seriesList, user });
 
     return payment;
   }
@@ -79,6 +83,8 @@ export class PaymentsService {
       user: user.userId,
       seriesList,
     });
+
+    await this.shoppingCartService.deleteSeriesList({ seriesList, user });
 
     return payment;
   }

@@ -11,5 +11,6 @@ import { SeriesModule } from '../series/series.module';
     shoppingCartResolver, //
     shoppingCartService,
   ],
+  exports: [shoppingCartService],
 })
 export class shoppingCartModule {}
