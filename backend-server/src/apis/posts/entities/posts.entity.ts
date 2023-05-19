@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Comment } from 'src/apis/comments/entities/comments.entity';
 import { Like } from 'src/apis/like/entities/like.entity';
 import { Series } from 'src/apis/series/entities/series.entity';
 import { Tag } from 'src/apis/tags/entities/tags.entity';
@@ -67,4 +68,8 @@ export class Post {
   @OneToMany(() => Like, (like) => like.post, { nullable: true })
   @Field(() => [Like], { nullable: true })
   likes?: Like[];
+
+  @OneToMany(() => Comment, (comment) => comment.post, { nullable: true })
+  @Field(() => [Comment], { nullable: true })
+  comments?: Comment[];
 }
