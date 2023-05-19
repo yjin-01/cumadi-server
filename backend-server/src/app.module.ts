@@ -19,10 +19,14 @@ import { PaymentDetailsModule } from './apis/paymentDetails/paymentDetails.modul
 import { shoppingCartModule } from './apis/shoppingCart/shoppingCart.module';
 import { LikeModule } from './apis/like/like.module';
 import { ImagesModule } from './apis/images/images.module';
+import { CommentsModule } from './apis/comments/comments.module';
+import { AnswersModule } from './apis/answers/answers.module';
 
 @Module({
   imports: [
+    AnswersModule,
     AuthModule,
+    CommentsModule,
     LikeModule,
     ImagesModule,
     MemosModule,
