@@ -10,11 +10,12 @@ export class LikeResolver {
     private readonly likeService: LikeService, //
   ) {}
 
+  // 보류 코드⭐️⭐️
   @Query(() => Int)
   fetchLikeCountByPost(
     @Args('postId', { nullable: true }) postId: string, //
   ): Promise<number> {
-    return this.likeService.findAll({ postId });
+    return this.likeService.findLikeCount({ postId });
   }
 
   @UseGuards(GqlAuthGuard('access'))

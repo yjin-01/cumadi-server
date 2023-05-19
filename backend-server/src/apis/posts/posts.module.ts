@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { SeriesModule } from '../series/series.module';
 import { TagsModule } from '../tags/tags.module';
 import { StatisticModule } from '../statistics/statistics.module';
+import { LikeModule } from '../like/like.module';
 
 @Module({
   imports: [

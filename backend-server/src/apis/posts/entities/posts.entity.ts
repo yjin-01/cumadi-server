@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Like } from 'src/apis/like/entities/like.entity';
 import { Series } from 'src/apis/series/entities/series.entity';
 import { Tag } from 'src/apis/tags/entities/tags.entity';
 import { User } from 'src/apis/users/entities/users.entity';
@@ -10,6 +11,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -43,7 +45,7 @@ export class Post {
 
   @UpdateDateColumn()
   @Field(() => Date)
-  uodatedAt: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn()
   @Field(() => Date)
@@ -61,4 +63,8 @@ export class Post {
   @ManyToMany(() => Tag, (tags) => tags.posts)
   @Field(() => [Tag], { nullable: true })
   tags?: Tag[];
+
+  @OneToMany(() => Like, (like) => like.post, { nullable: true })
+  @Field(() => [Like], { nullable: true })
+  likes?: Like[];
 }
