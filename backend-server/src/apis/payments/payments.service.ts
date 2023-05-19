@@ -8,6 +8,7 @@ import {
   IPaymentServiceCheckDuplication,
   IPaymentServiceFindOneByImpUid,
   IPaymentsServiceCreate,
+  IPaymentsServiceCreateFreeSeries,
 } from './interfaces/payments-service.interface';
 import { IamportService } from '../iamport/iamport.service';
 
@@ -48,6 +49,27 @@ export class PaymentsService {
     const payment = await this.paymentRepository.save({
       impUid,
       amount,
+      user,
+    });
+
+    // 결제 상세 내역 저장
+    const paymentDetails = await this.paymentDetailsService.create({
+      payment,
+      user: user.userId,
+      seriesList,
+    });
+
+    return payment;
+  }
+
+  async createFreeSeries({
+    seriesList,
+    user,
+  }: IPaymentsServiceCreateFreeSeries): Promise<Payment> {
+    // 결제 내역 저장
+    const payment = await this.paymentRepository.save({
+      impUid: '무료',
+      amount: 0,
       user,
     });
 

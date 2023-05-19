@@ -13,3 +13,8 @@ export interface IPaymentsServiceCreate {
   createPaymentInput: CreatePaymentInput;
   user: IAuthUser['user'];
 }
+
+export interface IPaymentsServiceCreateFreeSeries {
+  seriesList: string[];
+  user: IAuthUser['user'];
+}
