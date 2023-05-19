@@ -37,6 +37,6 @@ export class shoppingCartResolver {
     @Context() context: IContext,
   ): Promise<boolean> {
     const user = context.req.user;
-    return this.shoppingCartService.delete({ seriesId, user });
+    return this.shoppingCartService.deleteSeries({ seriesId, user });
   }
 }
