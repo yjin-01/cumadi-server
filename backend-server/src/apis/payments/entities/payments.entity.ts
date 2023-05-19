@@ -36,6 +36,7 @@ export class Payment {
   status: PAYMENT_STATUS_ENUM;
 
   @CreateDateColumn()
+  @Field(() => Payment)
   createdAt: Date;
 
   @ManyToOne(() => User)

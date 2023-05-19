@@ -4,7 +4,6 @@ import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { IContext } from 'src/commons/interfaces/context';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentInput } from './dto/create-payments-input';
-import { PaymentDetail } from '../paymentDetails/entities/paymentDetails.entity';
 import { Payment } from './entities/payments.entity';
 
 @Resolver()
@@ -19,11 +18,20 @@ export class PaymentsResolver {
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput, //
     @Context() context: IContext,
   ): Promise<Payment> {
-    console.log('?????????');
     const user = context.req.user;
     return this.paymentsService.create({
       createPaymentInput,
       user,
     });
+  }
+
+  @UseGuards(GqlAuthGuard('access'))
+  @Mutation(() => Payment)
+  createPaymentFreeSeries(
+    @Args({ name: 'seriesList', type: () => [String] }) seriesList: string[], //
+    @Context() context: IContext,
+  ) {
+    const user = context.req.user;
+    return this.paymentsService.createFreeSeries({ seriesList, user });
   }
 }
