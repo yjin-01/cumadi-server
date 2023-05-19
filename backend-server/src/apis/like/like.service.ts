@@ -16,7 +16,8 @@ export class LikeService {
     private readonly likeRepository: Repository<Like>,
   ) {}
 
-  async findAll({ postId }: ILikeServiceFindAll): Promise<number> {
+  // 보류 코드⭐️⭐️
+  async findLikeCount({ postId }: ILikeServiceFindAll): Promise<number> {
     const post = await this.likeRepository.findAndCount({
       where: { post: { postId } },
     });

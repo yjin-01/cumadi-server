@@ -12,5 +12,6 @@ import { Like } from './entities/like.entity';
     LikeResolver, //
     LikeService,
   ],
+  exports: [LikeService],
 })
 export class LikeModule {}

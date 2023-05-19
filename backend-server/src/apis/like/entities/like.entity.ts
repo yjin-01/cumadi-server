@@ -1,7 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Post } from 'src/apis/posts/entities/posts.entity';
 import { User } from 'src/apis/users/entities/users.entity';
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -14,7 +20,9 @@ export class Like {
   @Field(() => User)
   user: User;
 
-  @ManyToOne(() => Post)
+  @Index()
+  @ManyToOne(() => Post, (post) => post.likes)
+  @JoinColumn()
   @Field(() => Post)
   post: Post;
 }
