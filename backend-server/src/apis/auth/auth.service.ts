@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import {
   IAuthServiceGetAccessToken,
   IAuthServiceLogin,
+  IAuthServiceLoginOAuth,
   IAuthServiceRestoreAccessToken,
   IAuthServiceSetRefreshToken,
   IAuthServiceUserDelete,
@@ -38,12 +39,35 @@ export class AuthService {
     if (!user)
       throw new UnprocessableEntityException('존재하지 않는 이메일입니다.');
 
+    const isSocial = await bcrypt.compare('social', user.password);
+    if (isSocial)
+      throw new UnauthorizedException('소셜 계정으로 가입된 이메일입니다.');
+
     const isAuth = await bcrypt.compare(password, user.password);
     if (!isAuth)
       throw new UnprocessableEntityException('암호를 확인해 주세요.');
 
-    // this.setRefreshToken({ user, context });
+    this.setRefreshToken({ user, res: context.res });
     return this.getAccessToken({ user });
+  }
+
+  async loginOatuh({ req, res }: IAuthServiceLoginOAuth) {
+    if (!req.user.email) {
+      req.user.email = `${req.user.nickname}@md-unknown.com`;
+    }
+    let user = await this.usersService.findOneByEmail({
+      email: req.user.email,
+    });
+
+    if (!user) {
+      user = await this.usersService.create({
+        createUserInput: { ...req.user },
+      });
+    }
+
+    this.setRefreshToken({ user, res });
+    // front-end 도메인 확인 후 수정
+    res.redirect('http://localhost:5500/frontend/social-login.html');
   }
 
   async logout({ context }) {
@@ -113,19 +137,22 @@ export class AuthService {
     return this.getAccessToken({ user });
   }
 
-  setRefreshToken({ user, context }: IAuthServiceSetRefreshToken): void {
+  setRefreshToken({ user, res }: IAuthServiceSetRefreshToken): void {
     const refreshToken = this.jwtService.sign(
       { sub: user.userId },
       { secret: process.env.JWT_REFRESH_KEY, expiresIn: '2w' },
     );
 
-    context.res.setHeader(
+    // front-end 도메인, back-end 도메인 확인 후 옵션 추가 및 수정
+    res.setHeader(
       'set-Cookie',
       `refreshToken=${refreshToken}; path=/; SameSite=None; Secure; httpOnly;`,
     );
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost');
   }
 
   getAccessToken({ user }: IAuthServiceGetAccessToken): string {
+    // cookie 동작 확인 후 만료 기한 수정
     return this.jwtService.sign(
       { sub: user.userId },
       // { secret: process.env.JWT_ACCESS_KEY, expiresIn: '1h' },
