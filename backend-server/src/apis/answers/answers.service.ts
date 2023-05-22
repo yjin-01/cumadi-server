@@ -35,6 +35,7 @@ export class AnswersService {
   }): Promise<IAnswerServiceReturn[]> {
     const result = await this.answersRepository.find({
       where: { comment: { post: { postId } } },
+      order: { createdAt: 'ASC' },
       relations: ['comment', 'comment.user', 'comment.post.user'],
     });
 

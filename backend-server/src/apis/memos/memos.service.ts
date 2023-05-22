@@ -47,6 +47,7 @@ export class MemoService {
     if (!user) throw new UnauthorizedException();
 
     const result = await this.memosRepository.find({
+      order: { createdAt: 'ASC' },
       relations: ['user'],
     });
 

@@ -23,8 +23,8 @@ export class Comment {
   @Field(() => String)
   content: string;
 
-  @Column()
   @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()

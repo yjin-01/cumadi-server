@@ -17,7 +17,7 @@ export class Statistics {
   @Field(() => Int)
   view: number;
 
-  @ManyToOne(() => Post)
+  @ManyToOne(() => Post, { onDelete: 'CASCADE' })
   @Field(() => Post)
   post: Post;
 }
