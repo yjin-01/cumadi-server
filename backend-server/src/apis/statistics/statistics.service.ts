@@ -43,15 +43,17 @@ export class StatisticsService {
     userId,
   }): Promise<Statistics[]> {
     const { startDate, endDate, postId } = fetchStatisticsInput;
+
     const result = await this.statisticsRepository.find({
       where: {
         post: { postId },
         date: Between(new Date(startDate), new Date(endDate)),
       },
+      order: { date: 'ASC' },
       relations: ['post', 'post.user'],
     });
 
-    const check = result.find((el) => el.post.user.userId !== userId);
+    const check = result.find((el) => el.post?.user.userId !== userId);
     if (check) throw new UnauthorizedException();
 
     return result;
@@ -67,10 +69,11 @@ export class StatisticsService {
       where: {
         date: Between(new Date(startDate), new Date(endDate)),
       },
+      order: { date: 'ASC' },
       relations: ['post', 'post.user'],
     });
 
-    const userFiltered = result.filter((el) => el.post.user.userId === userId);
+    const userFiltered = result.filter((el) => el.post?.user.userId === userId);
 
     return userFiltered;
   }

@@ -29,6 +29,7 @@ export class CommentsService {
   }): Promise<Comment[]> {
     return this.commentsRepository.find({
       where: { post: { postId } },
+      order: { createdAt: 'ASC' },
       relations: ['user'],
     });
   }

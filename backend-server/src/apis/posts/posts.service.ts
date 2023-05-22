@@ -18,7 +18,6 @@ import { UsersService } from '../users/users.service';
 import { SeriesService } from '../series/series.service';
 import { TagsService } from '../tags/tags.service';
 import { StatisticsService } from '../statistics/statistics.service';
-import { LikeService } from '../like/like.service';
 
 @Injectable()
 export class PostsService {
@@ -58,6 +57,7 @@ export class PostsService {
 
   async findAll(): Promise<Post[]> {
     const result = await this.postsRepository.find({
+      order: { createdAt: 'ASC' },
       relations: ['series', 'tags', 'user', 'likes'],
     });
 
@@ -67,6 +67,7 @@ export class PostsService {
   async findBySeries({ seriesId }: IPostServiceFindBySeries): Promise<Post[]> {
     return await this.postsRepository.find({
       where: { series: { seriesId } },
+      order: { createdAt: 'ASC' },
       relations: ['series', 'tags', 'user', 'likes'],
     });
   }
@@ -74,6 +75,7 @@ export class PostsService {
   findAllOfMine({ userId }): Promise<Post[]> {
     return this.postsRepository.find({
       where: { user: { userId } },
+      order: { createdAt: 'ASC' },
       relations: ['series', 'tags', 'user', 'likes'],
     });
   }
@@ -140,7 +142,7 @@ export class PostsService {
     postId, //
     userId,
   }: IPostServiceDelete): Promise<boolean> {
-    const post = await this.postsRepository.softDelete({
+    const post = await this.postsRepository.delete({
       postId,
       user: { userId },
     });
