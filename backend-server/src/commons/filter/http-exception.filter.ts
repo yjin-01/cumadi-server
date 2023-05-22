@@ -10,6 +10,7 @@ import { GraphQLError, graphql } from 'graphql';
 @Catch()
 export class CustomExceptionFilter implements ExceptionFilter {
   catch(exception: unknown) {
+    console.log(exception);
     const error = {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: '예외 발생',
