@@ -1,4 +1,9 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  UnprocessableEntityException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Series } from './entities/series.entity';
 import { In, Repository } from 'typeorm';
@@ -89,6 +94,9 @@ export class SeriesService {
   }: ISeriesServiceCreate): Promise<Series> {
     const { categoryId, posts, ...rest } = createSeriesInput;
     const category = await this.seriesCategoriesService.findOne({ categoryId });
+
+    if (!category)
+      throw new UnprocessableEntityException("Category dosen't exist");
 
     const series = await this.seriesRepository.save({
       ...rest,
