@@ -12,7 +12,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
   catch(exception: unknown) {
     const error = {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: 'Error',
+      message: '예외 발생',
     };
 
     if (exception instanceof HttpException) {
