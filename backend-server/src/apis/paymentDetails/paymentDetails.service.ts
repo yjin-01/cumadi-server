@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PaymentDetail } from './entities/paymentDetails.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   IPaymentDetailServiceCreate,
   IPaymentDetailServiceFindAll,
   IPaymentDetailServiceFindOne,
 } from './interfaces/paymentDetails-service.interface';
+import { ICheckPaymentListReturn } from './dto/checkPaymentList-return.type';
 
 @Injectable()
 export class PaymentDetailsService {
@@ -49,5 +50,26 @@ export class PaymentDetailsService {
     const paymentDetails = await this.paymentDetailRepository.save(series);
 
     return paymentDetails;
+  }
+
+  async checkPayment({ seriesId, user }): Promise<ICheckPaymentListReturn> {
+    const result = { status: true, seriesId: [] };
+    const paymentDetail = await this.paymentDetailRepository.find({
+      where: { series: In(seriesId), user: user },
+      // relations: ['series', 'user'],
+    });
+
+    const payment = paymentDetail.map((el) => {
+      return el.paymentDetailId;
+    });
+    console.log(payment);
+
+    if (payment.length === 0) {
+      return result;
+    } else {
+      result.status = false;
+      result.seriesId = [...payment];
+      return result;
+    }
   }
 }
