@@ -67,7 +67,7 @@ export class AuthService {
 
     this.setRefreshToken({ user, res });
     // front-end 도메인 확인 후 수정
-    res.redirect('http://localhost:5500/frontend/social-login.html');
+    res.redirect('http://localhost:5500/');
   }
 
   async logout({ context }) {

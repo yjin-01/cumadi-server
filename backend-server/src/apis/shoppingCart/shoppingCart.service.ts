@@ -50,7 +50,7 @@ export class shoppingCartService {
     return series;
   }
 
-  async delete({
+  async deleteSeries({
     seriesId,
     user,
   }: IShoppingCartServiceDelete): Promise<boolean> {
@@ -67,6 +67,26 @@ export class shoppingCartService {
       cartVal.splice(seriesIndex, 1);
       await this.cacheManager.set(`cart:${user.userId}`, cartVal, { ttl: 0 });
     }
+    return true;
+  }
+
+  async deleteSeriesList({ seriesList, user }) {
+    const cartVal: [string] = await this.cacheManager.get(
+      `cart:${user.userId}`,
+    );
+
+    if (!cartVal) {
+      return false;
+    }
+
+    seriesList.forEach(async (el: string) => {
+      const seriesIndex = cartVal.indexOf(el);
+      if (seriesIndex > -1) {
+        cartVal.splice(seriesIndex, 1);
+        await this.cacheManager.set(`cart:${user.userId}`, cartVal, { ttl: 0 });
+      }
+    });
+
     return true;
   }
 }

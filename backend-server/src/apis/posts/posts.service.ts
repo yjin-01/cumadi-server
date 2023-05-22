@@ -46,7 +46,7 @@ export class PostsService {
   }): Promise<Post> {
     const result = await this.postsRepository.findOne({
       where: { postId },
-      relations: ['series', 'tags', 'user', 'likes'],
+      relations: ['series', 'tags', 'user', 'likes', 'comments'],
     });
     if (!result)
       throw new NotFoundException('존재하지 않는 포스트 아이디입니다.');

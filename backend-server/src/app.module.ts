@@ -45,6 +45,9 @@ import { AnswersModule } from './apis/answers/answers.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/commons/grahql/schema.gql'),
       context: ({ req, res }) => ({ req, res }),
+      formatError: (formattedError) => {
+        return formattedError;
+      },
     }),
     TypeOrmModule.forRoot({
       type: process.env.DATABASE_TYPE as 'mysql',

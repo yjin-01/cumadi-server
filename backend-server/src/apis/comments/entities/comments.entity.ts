@@ -5,6 +5,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -33,7 +35,9 @@ export class Comment {
   @Field(() => User)
   user: User;
 
-  @ManyToOne(() => Post, { onDelete: 'CASCADE' })
+  @Index()
+  @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
   @Field(() => Post)
+  @JoinColumn()
   post: Post;
 }
