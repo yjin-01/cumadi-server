@@ -37,7 +37,7 @@ export class PostsService {
   findOne({ postId }): Promise<Post> {
     return this.postsRepository.findOne({
       where: { postId },
-      relations: ['series', 'tags', 'user', 'likes'],
+      relations: ['series', 'tags', 'user', 'likes', 'comments'],
     });
   }
 
@@ -55,28 +55,26 @@ export class PostsService {
     return result;
   }
 
-  async findAll(): Promise<Post[]> {
-    const result = await this.postsRepository.find({
-      order: { createdAt: 'ASC' },
-      relations: ['series', 'tags', 'user', 'likes'],
+  findAll(): Promise<Post[]> {
+    return this.postsRepository.find({
+      order: { createdAt: 'DESC' },
+      relations: ['series', 'tags', 'user', 'likes', 'comments'],
     });
-
-    return result;
   }
 
   async findBySeries({ seriesId }: IPostServiceFindBySeries): Promise<Post[]> {
     return await this.postsRepository.find({
       where: { series: { seriesId } },
-      order: { createdAt: 'ASC' },
-      relations: ['series', 'tags', 'user', 'likes'],
+      order: { createdAt: 'DESC' },
+      relations: ['series', 'tags', 'user', 'likes', 'comments'],
     });
   }
 
   findAllOfMine({ userId }): Promise<Post[]> {
     return this.postsRepository.find({
       where: { user: { userId } },
-      order: { createdAt: 'ASC' },
-      relations: ['series', 'tags', 'user', 'likes'],
+      order: { createdAt: 'DESC' },
+      relations: ['series', 'tags', 'user', 'likes', 'comments'],
     });
   }
 
