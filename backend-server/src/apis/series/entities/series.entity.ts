@@ -6,6 +6,7 @@ import { User } from 'src/apis/users/entities/users.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -47,6 +48,9 @@ export class Series {
   @UpdateDateColumn()
   @Field(() => Date)
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne(() => SeriesCategory)
   @Field(() => SeriesCategory)
