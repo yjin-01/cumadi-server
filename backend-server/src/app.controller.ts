@@ -3,7 +3,12 @@ import { Controller, Get } from '@nestjs/common';
 @Controller()
 export class AppController {
   @Get('/')
-  getHello(): string {
+  get(): string {
+    return 'Health checker';
+  }
+
+  @Get('/favicon.ico')
+  get2(): string {
     return 'Health checker';
   }
 }
