@@ -22,16 +22,6 @@ export class PaymentDetailsResolver {
   }
 
   @UseGuards(GqlAuthGuard('access'))
-  @Query(() => CheckPaymentListReturn)
-  checkPaymentList(
-    @Args({ name: 'seriesId', type: () => [String] }) seriesId: string[],
-    @Context() context: IContext, //
-  ): Promise<CheckPaymentListReturn> {
-    const user = context.req.user;
-    return this.paymentDetailsService.checkPayment({ seriesId, user });
-  }
-
-  @UseGuards(GqlAuthGuard('access'))
   @Query(() => Boolean)
   isVaildCreateReviewByUser(
     @Args('seriesId') seriesId: string,
@@ -39,5 +29,15 @@ export class PaymentDetailsResolver {
   ): Promise<boolean> {
     const user = context.req.user;
     return this.paymentDetailsService.findOne({ user, seriesId });
+  }
+
+  @UseGuards(GqlAuthGuard('access'))
+  @Mutation(() => CheckPaymentListReturn)
+  checkPaymentList(
+    @Args({ name: 'seriesId', type: () => [String] }) seriesId: string[],
+    @Context() context: IContext, //
+  ): Promise<CheckPaymentListReturn> {
+    const user = context.req.user;
+    return this.paymentDetailsService.checkPayment({ seriesId, user });
   }
 }

@@ -35,7 +35,24 @@ export class SeriesService {
   findAll(): Promise<Series[]> {
     return this.seriesRepository.find({
       relations: ['category', 'user'],
+      order: { createdAt: 'desc' },
     });
+  }
+
+  async findBest(): Promise<Series[]> {
+    const result = await this.seriesRepository
+      .createQueryBuilder('series')
+      .select()
+      .leftJoinAndSelect('series.category', 'category')
+      .leftJoinAndSelect('series.user', 'user')
+      .leftJoin('series.payments', 'payments')
+      .groupBy('payments.series')
+      .addGroupBy('series.seriesId')
+      .orderBy('Count(payments.series)', 'DESC')
+      .addOrderBy('series.createdAt', 'DESC')
+      .getMany();
+
+    return result;
   }
 
   async findOne({

@@ -5,6 +5,7 @@ import { User } from 'src/apis/users/entities/users.entity';
 import {
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -20,7 +21,8 @@ export class PaymentDetail {
   @Field(() => Payment)
   payment: Payment;
 
-  @ManyToOne(() => Series)
+  @Index()
+  @ManyToOne(() => Series, (series) => series.payments)
   @Field(() => Series)
   series: Series;
 

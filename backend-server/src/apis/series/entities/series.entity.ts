@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { title } from 'process';
+import { PaymentDetail } from 'src/apis/paymentDetails/entities/paymentDetails.entity';
 import { SeriesCategory } from 'src/apis/seriesCategories/entities/seriesCategories.entity';
 import { User } from 'src/apis/users/entities/users.entity';
 import {
@@ -7,6 +8,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -53,4 +55,9 @@ export class Series {
   @ManyToOne(() => User)
   @Field(() => User)
   user: User;
+
+  @OneToMany(() => PaymentDetail, (paymentDetail) => paymentDetail.series, {
+    nullable: true,
+  })
+  payments?: PaymentDetail[];
 }
