@@ -21,6 +21,7 @@ import { LikeModule } from './apis/like/like.module';
 import { ImagesModule } from './apis/images/images.module';
 import { CommentsModule } from './apis/comments/comments.module';
 import { AnswersModule } from './apis/answers/answers.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -67,6 +68,6 @@ import { AnswersModule } from './apis/answers/answers.module';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [AppController],
 })
 export class AppModule {}
