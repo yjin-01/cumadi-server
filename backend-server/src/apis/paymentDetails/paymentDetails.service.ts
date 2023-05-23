@@ -3,11 +3,12 @@ import { PaymentDetail } from './entities/paymentDetails.entity';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  IPaymentDetailServiceCheckPayment,
   IPaymentDetailServiceCreate,
   IPaymentDetailServiceFindAll,
   IPaymentDetailServiceFindOne,
 } from './interfaces/paymentDetails-service.interface';
-import { ICheckPaymentListReturn } from './dto/checkPaymentList-return.type';
+import { CheckPaymentListReturn } from './dto/checkPaymentList-return.type';
 
 @Injectable()
 export class PaymentDetailsService {
@@ -19,6 +20,7 @@ export class PaymentDetailsService {
   findAll({ user }: IPaymentDetailServiceFindAll): Promise<PaymentDetail[]> {
     return this.paymentDetailRepository.find({
       where: { user },
+      order: { createdAt: 'desc' },
       relations: ['series', 'user'],
     });
   }
@@ -52,11 +54,13 @@ export class PaymentDetailsService {
     return paymentDetails;
   }
 
-  async checkPayment({ seriesId, user }): Promise<ICheckPaymentListReturn> {
+  async checkPayment({
+    seriesId,
+    user,
+  }: IPaymentDetailServiceCheckPayment): Promise<CheckPaymentListReturn> {
     const result = { status: true, seriesId: [] };
     const paymentDetail = await this.paymentDetailRepository.find({
       where: { series: In(seriesId), user: user },
-      // relations: ['series', 'user'],
     });
 
     const payment = paymentDetail.map((el) => {

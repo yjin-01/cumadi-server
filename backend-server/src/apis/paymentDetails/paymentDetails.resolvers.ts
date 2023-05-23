@@ -4,7 +4,7 @@ import { IContext } from 'src/commons/interfaces/context';
 import { PaymentDetail } from './entities/paymentDetails.entity';
 import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
-import { ICheckPaymentListReturn } from './dto/checkPaymentList-return.type';
+import { CheckPaymentListReturn } from './dto/checkPaymentList-return.type';
 
 @Resolver()
 export class PaymentDetailsResolver {
@@ -22,11 +22,11 @@ export class PaymentDetailsResolver {
   }
 
   @UseGuards(GqlAuthGuard('access'))
-  @Query(() => ICheckPaymentListReturn)
+  @Query(() => CheckPaymentListReturn)
   checkPaymentList(
     @Args({ name: 'seriesId', type: () => [String] }) seriesId: string[],
     @Context() context: IContext, //
-  ): Promise<ICheckPaymentListReturn> {
+  ): Promise<CheckPaymentListReturn> {
     const user = context.req.user;
     return this.paymentDetailsService.checkPayment({ seriesId, user });
   }

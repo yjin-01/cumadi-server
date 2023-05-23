@@ -1,8 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { bool } from 'aws-sdk/clients/signer';
 
 @ObjectType()
-export class ICheckPaymentListReturn {
+export class CheckPaymentListReturn {
   @Field(() => Boolean)
   status: boolean;
 
