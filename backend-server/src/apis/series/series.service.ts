@@ -115,6 +115,9 @@ export class SeriesService {
     if (!category)
       throw new UnprocessableEntityException("Category dosen't exist");
 
+    if (posts.length == 0)
+      throw new UnprocessableEntityException("Post dosen't exist");
+
     const series = await this.seriesRepository.save({
       ...rest,
       category: category,
@@ -160,7 +163,7 @@ export class SeriesService {
   }
 
   async delete({ seriesId }: ISeriesServiceDelete) {
-    const result = await this.seriesRepository.delete({ seriesId });
+    const result = await this.seriesRepository.softDelete({ seriesId });
     return result.affected ? true : false;
   }
 }
