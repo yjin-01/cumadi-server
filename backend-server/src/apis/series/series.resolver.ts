@@ -19,6 +19,11 @@ export class SeriesResolver {
     return this.seriesService.findAll();
   }
 
+  @Query(() => [Series])
+  fetchSeriesOfTheBest(): Promise<Series[]> {
+    return this.seriesService.findBest();
+  }
+
   @Query(() => IFetchSeriesReturn)
   fetchSeries(
     @Args('seriesId') seriesId: string, //

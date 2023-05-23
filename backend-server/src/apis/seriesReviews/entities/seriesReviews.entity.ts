@@ -35,8 +35,10 @@ export class SeriesReview {
   user: User;
 
   @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Field(() => Date)
   updatedAt: Date;
 }
