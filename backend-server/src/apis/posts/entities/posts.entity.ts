@@ -28,7 +28,7 @@ export class Post {
   @Field(() => String)
   title: string;
 
-  @Column()
+  @Column({ type: 'text' })
   @Field(() => String)
   content: string;
 
