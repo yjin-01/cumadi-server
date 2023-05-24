@@ -21,7 +21,7 @@ export class PaymentDetailsService {
     return this.paymentDetailRepository.find({
       where: { user },
       order: { createdAt: 'desc' },
-      relations: ['series', 'user'],
+      relations: ['series', 'user', 'payment'],
     });
   }
 
