@@ -5,7 +5,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AxiosError } from 'axios';
-import { GraphQLError, graphql } from 'graphql';
+import { GraphQLError } from 'graphql';
 
 @Catch()
 export class CustomExceptionFilter implements ExceptionFilter {
@@ -30,8 +30,8 @@ export class CustomExceptionFilter implements ExceptionFilter {
     console.log('예외코드: ', error.status);
     console.log('============');
 
-    throw new GraphQLError(error.message, {
-      extensions: { code: error.status },
-    });
+    // throw new GraphQLError(error.message, {
+    //   extensions: { code: error.status },
+    // });
   }
 }

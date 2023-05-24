@@ -46,9 +46,9 @@ import { AppController } from './app.controller';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/commons/grahql/schema.gql'),
       context: ({ req, res }) => ({ req, res }),
-      formatError: (formattedError) => {
-        return formattedError;
-      },
+      // formatError: (formattedError) => {
+      //   return formattedError;
+      // },
     }),
     TypeOrmModule.forRoot({
       type: process.env.DATABASE_TYPE as 'mysql',
