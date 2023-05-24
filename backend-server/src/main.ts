@@ -10,6 +10,8 @@ async function bootstrap() {
       '*', //
       'http://localhost:3000',
       'http://localhost:5500',
+      'http://cumadi.site',
+      'https://cumadi.site',
     ],
     credentials: true,
   });
