@@ -15,6 +15,11 @@ export interface IPaymentDetailServiceCreate {
   user: string;
   seriesList: string[];
 }
+export interface IPaymentDetailServiceCreateWithTransaction {
+  payment: Payment;
+  user: string;
+  seriesList: string[];
+}
 
 export interface IPaymentDetailServiceCheckPayment {
   user: IAuthUser['user'];

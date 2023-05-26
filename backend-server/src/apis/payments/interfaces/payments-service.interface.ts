@@ -1,3 +1,4 @@
+import { EntityManager } from 'typeorm';
 import { CreatePaymentInput } from '../dto/create-payments-input';
 import { IAuthUser } from 'src/commons/interfaces/context';
 
@@ -11,6 +12,12 @@ export interface IPaymentServiceCheckDuplication {
 
 export interface IPaymentsServiceCreate {
   createPaymentInput: CreatePaymentInput;
+  user: IAuthUser['user'];
+}
+
+export interface IPaymentsServiceCreateWithTransaction {
+  impUid: string;
+  amount: number;
   user: IAuthUser['user'];
 }
 

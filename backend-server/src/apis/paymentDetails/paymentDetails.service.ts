@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { PaymentDetail } from './entities/paymentDetails.entity';
-import { In, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, In, Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import {
-  IPaymentDetailServiceCheckPayment,
   IPaymentDetailServiceCreate,
+  IPaymentDetailServiceCreateWithTransaction,
   IPaymentDetailServiceFindAll,
   IPaymentDetailServiceFindOne,
+  IPaymentDetailServiceCheckPayment,
 } from './interfaces/paymentDetails-service.interface';
 import { CheckPaymentListReturn } from './dto/checkPaymentList-return.type';
+import { TransactionalService } from 'src/commons/transactions/transaction';
 
 @Injectable()
-export class PaymentDetailsService {
+export class PaymentDetailsService extends TransactionalService {
   constructor(
     @InjectRepository(PaymentDetail)
     private readonly paymentDetailRepository: Repository<PaymentDetail>,
-  ) {}
+    @InjectEntityManager()
+    protected readonly entityManager: EntityManager,
+  ) {
+    super(entityManager);
+  }
 
   findAll({ user }: IPaymentDetailServiceFindAll): Promise<PaymentDetail[]> {
     return this.paymentDetailRepository.find({
@@ -54,6 +60,20 @@ export class PaymentDetailsService {
     return paymentDetails;
   }
 
+  async createWithTransaction(
+    entityManager: EntityManager,
+    { payment, user, seriesList }: IPaymentDetailServiceCreateWithTransaction,
+  ): Promise<PaymentDetail[]> {
+    const series = [];
+
+    seriesList.forEach((el: string) => {
+      series.push({ series: el, payment, user });
+    });
+    const paymentDetails = this.paymentDetailRepository.create(series);
+
+    return await entityManager.save(paymentDetails);
+  }
+
   async checkPayment({
     seriesId,
     user,
@@ -66,7 +86,6 @@ export class PaymentDetailsService {
     const payment = paymentDetail.map((el) => {
       return el.paymentDetailId;
     });
-    console.log(payment);
 
     if (payment.length === 0) {
       return result;
