@@ -41,6 +41,5 @@ export class User {
   updatedAt: Date;
 
   @DeleteDateColumn()
-  @Field(() => Date)
-  deleatedAt: Date;
+  deletedAt: Date;
 }
