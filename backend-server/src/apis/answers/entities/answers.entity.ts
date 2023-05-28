@@ -21,8 +21,8 @@ export class Answer {
   @Field(() => String)
   content: string;
 
-  @Column()
   @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
