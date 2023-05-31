@@ -63,7 +63,7 @@ import { AppController } from './app.controller';
     }),
     CacheModule.register({
       store: redisStore,
-      url: 'redis://redis-server:6379',
+      url: process.env.REDIS_URL,
       isGlobal: true,
     }),
   ],
