@@ -123,12 +123,15 @@ export class SeriesService {
       category: category,
       user: { userId: user },
     });
-    const postArr = [];
-    posts.forEach((el) => {
-      postArr.push({ postId: el, series: series.seriesId });
-    });
 
-    const post = await this.postsService.updateSeries({
+    const postArr = [];
+    if (posts) {
+      posts.forEach((el) => {
+        postArr.push({ postId: el, series: series.seriesId });
+      });
+    }
+
+    await this.postsService.updateSeries({
       postArr,
     });
 
@@ -140,6 +143,7 @@ export class SeriesService {
     seriesId,
   }: ISeriesServiceUpdate): Promise<Series> {
     const { categoryId, posts, ...rest } = updateSeriesInput;
+
     const series = await this.findOne({ seriesId });
 
     const category = await this.seriesCategoriesService.findOne({ categoryId });
@@ -151,11 +155,13 @@ export class SeriesService {
     });
 
     const postArr = [];
-    posts.forEach((el) => {
-      postArr.push({ postId: el, series: series.seriesId });
-    });
+    if (posts) {
+      posts.forEach((el) => {
+        postArr.push({ postId: el, series: series.seriesId });
+      });
+    }
 
-    const post = await this.postsService.updateSeries({
+    await this.postsService.updateSeries({
       postArr,
     });
 
