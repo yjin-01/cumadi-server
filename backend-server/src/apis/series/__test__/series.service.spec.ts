@@ -7,9 +7,11 @@ import { SeriesCategoriesService } from 'src/apis/seriesCategories/seriesCategor
 import { SeriesCategory } from 'src/apis/seriesCategories/entities/seriesCategories.entity';
 import { PostsService } from 'src/apis/posts/posts.service';
 import {
+  Mock_Post,
+  Mock_Series,
   Mock_Series_Category,
+  Mock_Series_Repository,
   Mock_User,
-  SeriesMockRepository,
 } from './series.mocking';
 import { CreateSeriesInput } from '../dto/create-series.input';
 import { UpdateSeriesInput } from '../dto/update-series.input';
@@ -28,24 +30,9 @@ class CategoryMockRepository {
   }
 }
 
-class PostMockRepository {
-  postDB = [
-    {
-      postId: '1d01042d-7a20-4469-ab71-e532eea30538',
-      title: '포스트1',
-      image: '포스트이미지1',
-      description: '포스트1설명',
-      content: '포스트1내용',
-    },
-  ];
-}
-
-class PaymentDetailMockRepository {
-  paymentDetailDB = [];
-}
-
 describe('seriesService', () => {
   let seriesService: SeriesService;
+  let postsService: PostsService;
 
   beforeEach(async () => {
     const seriesModule: TestingModule = await Test.createTestingModule({
@@ -55,7 +42,7 @@ describe('seriesService', () => {
 
         {
           provide: getRepositoryToken(Series),
-          useClass: SeriesMockRepository, // Mock 데이터 설정
+          useValue: Mock_Series_Repository, // Mock 데이터 설정
         },
         {
           provide: getRepositoryToken(SeriesCategory),
@@ -78,9 +65,18 @@ describe('seriesService', () => {
     }).compile();
 
     seriesService = seriesModule.get<SeriesService>(SeriesService);
+    postsService = seriesModule.get<PostsService>(PostsService);
   });
 
-  describe('create', () => {
+  describe('시리즈 전체 조회', () => {
+    it('findAll', () => {
+      const result = seriesService.findAll();
+
+      expect(result).toBe(Mock_Series_Repository.seriesDB);
+    });
+  });
+
+  describe('시리즈 생성', () => {
     it('시리즈 생성시 포스트를 선택했는지 검증', async () => {
       const createSeriesInput: CreateSeriesInput = {
         title: '시리즈',
@@ -135,7 +131,7 @@ describe('seriesService', () => {
       };
 
       const newSeries = {
-        seriesId: '1234',
+        seriesId: '1',
         title: '시리즈',
         introduction: '시리즈소개',
         image: '이미지',
@@ -150,15 +146,26 @@ describe('seriesService', () => {
         user: Mock_User.userId,
       });
 
+      const postArr = [
+        {
+          postId: Mock_Post.postId,
+          series: Mock_Series.seriesId,
+        },
+      ];
+      expect(postsService.updateSeries).toBeCalled();
+
+      expect(postsService.updateSeries).toHaveBeenCalledWith({
+        postArr,
+      });
+
       expect(result).toStrictEqual(newSeries);
     });
   });
 
-  describe('update', () => {
+  describe('시리즈 수정', () => {
     it('시리즈 수정', async () => {
       const updateSeriesInput: UpdateSeriesInput = {
         title: '시리즈 수정',
-        posts: [],
       };
 
       const updateSeries = {
@@ -176,12 +183,26 @@ describe('seriesService', () => {
         updateSeriesInput,
         seriesId: '1',
       });
+      expect(postsService.updateSeries).toBeCalled();
+      expect(postsService.updateSeries).toHaveBeenCalledWith({
+        postArr: [],
+      });
+
       expect(result).toStrictEqual(updateSeries);
     });
   });
-  // describe('delete', () => {
-  //   it('delete', () => {
 
-  //   });
-  // });
+  describe('시리즈 삭제', () => {
+    it('delete', async () => {
+      const result = await seriesService.delete({
+        seriesId: '1',
+      });
+
+      expect(result).toBe(true);
+
+      expect(Mock_Series_Repository.softDelete).toBeCalledWith({
+        seriesId: Mock_Series.seriesId,
+      });
+    });
+  });
 });
