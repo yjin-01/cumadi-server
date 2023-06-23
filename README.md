@@ -40,7 +40,7 @@
 
 - ### 시리즈 / 리뷰 / 좋아요 API
   - CRUD 구현
-  - querybuilder를 이용한 API 구현
+  - 테스트 코드 구현
 
 
 <br/>
