@@ -26,14 +26,13 @@
 - ### 공통 구현
   - Database
     - 정규화를 기반으로 한 ERD 모델링
-    - typeORM을 이용하여 스키마 구현
  
   - custom exception filter 구현
 
 - ### 결제 & 결제 상세 내역 API
   - 결제 & 결제 상세 내역 CRUD 구현 
   - PortOne 관련 검증 로직 구현
-  - 추상클래스를 이용한 transaction 구현
+  - DB transaction 구현
 
 - ### 장바구니 API
   -  redis를 이용한 장바구니 로직 구현
